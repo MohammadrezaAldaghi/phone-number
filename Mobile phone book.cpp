@@ -6,28 +6,6 @@
 #include<cstdlib>
 using namespace std;
 
-/***********************************New Class*****************************/
-class Person 
-{
-    protected:
-    string Name;
-    public:
-    Person(){};
-    void SetPerson()
-    {
-        cout<<"Enter fullname : ";
-        string input;
-        getline(cin,input);
-        Name = input;
-    }
-    string Get(){return Name;}
-    void Display()
-    {
-        cout<<"Name = "<<Name<<endl;
-    }
-
-};
-/***********************************New Class*****************************/
 class PhoneNumber
 {
     protected:
@@ -51,7 +29,6 @@ class PhoneNumber
             string type;
             cout<<endl<<"Enter Type (for example :mobile,home,Workplace,other) : ";
             getline(cin,type);
-            
             try
             {
                 if(input!=""||input!=" ",input!="  "||input!="   "||input!="    "||input!="     ")
@@ -61,7 +38,6 @@ class PhoneNumber
                         if(input.length()==11)
                         {
                             Phonenumber.insert(make_pair(Key,input));
-                            Key++;
                         }
                         else
                         {
@@ -82,19 +58,78 @@ class PhoneNumber
             {
                 std::cerr << e.what() <<endl;
             }
+            try
+            {
+                if(type!=""||type!=" "||type!="  "||type!="   ")
+                {
+                    TypeNumber.insert(make_pair(Key,type));
+                    Key++;
+                }
+                else
+                {
+                    throw invalid_argument("invalid argument");
+                }
+            }
+            catch(const std::exception& e)
+            {
+                std::cerr << e.what() << '\n';
+            }
+            
             Sleep(700);
             system("cls");
         }
     }
     virtual void Display() 
     {
+        int arr[15];
+        string str[15];
+        int index=0;
         for(const auto& a :Phonenumber)
         {
-            cout<<a.first+1<<" : "<<a.second<<endl;
+            arr[index]=a.first;
+            str[index]=a.second;
+            index++;
+            // output : cout<<a.first+1<<" : "<<a.second<<endl;
+        }
+        index=0;
+        for(const auto& a :TypeNumber)
+        {
+            str[index]+= "  type : " + a.second;
+            index++;
+            // cout<<a.first+1<<" : "<<a.second<<endl;
+        }
+        for(int i=0;i<index;i++)
+        {
+            cout<<arr[i]<<" : "<<str[i]<<endl;
         }
     }
 
 };
+/***********************************New Class*****************************/
+class Person : public PhoneNumber
+{
+    protected:
+    string Name;
+    public:
+    Person(){};
+    void SetPerson()
+    {
+        cout<<"Enter fullname : ";
+        string input;
+        getline(cin,input);
+        Name = input;
+        PhoneNumber::SetPhoneNumber();
+    }
+    string Get(){return Name;}
+    void Display()
+    {
+        cout<<"Name = "<<Name<<endl;
+        PhoneNumber::Display();
+    }
+
+};
+/***********************************New Class*****************************/
+
 /***********************************New Class*****************************/
 class Favorite
 {
@@ -150,11 +185,12 @@ int main()
     //     it->second.Display();
     // }
     cout<<endl<<"------------------------------"<<endl;
-    PhoneNumber PH;
-    PH.SetPhoneNumber();
-    PH.Display();
-
-    
+    // PhoneNumber PH;
+    // PH.SetPhoneNumber();
+    // PH.Display();
+    Person PP;
+    PP.SetPerson();
+    PP.Display();
     
 
 
