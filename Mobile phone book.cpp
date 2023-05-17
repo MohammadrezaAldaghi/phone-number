@@ -79,6 +79,18 @@ class PhoneNumber
             system("cls");
         }
     }
+    void DeletePhoneNumber()
+    {
+        system("cls");
+        Display();
+        cout<<"Enter number to delete : ";
+        int input=0;
+        cin>>input;
+        Phonenumber.erase(input);
+        TypeNumber.erase(input);
+        Sleep(800);
+        system("cls");
+    }
     virtual void Display() 
     {
         int arr[15];
@@ -191,7 +203,8 @@ int main()
     Person PP;
     PP.SetPerson();
     PP.Display();
-    
+    PP.DeletePhoneNumber();
+    PP.Display();
 
 
 
