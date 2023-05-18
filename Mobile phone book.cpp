@@ -4,6 +4,7 @@
 #include<iterator>
 #include<windows.h>
 #include<cstdlib>
+#include<vector>
 using namespace std;
 
 class PhoneNumber
@@ -21,27 +22,40 @@ class PhoneNumber
             // cin.ignore();
             cout<<"Enter Phone number (-1 to exit) : ";
             string input;
-            getline(cin,input);
+            cin>>input;
             if(input=="-1")
             {
                 break;
             }
             string type;
             cout<<endl<<"Enter Type (for example :mobile,home,Workplace,other) : ";
-            getline(cin,type);
+            bool check=false;
+            cin>>type;
             try
             {
-                if(input!=""||input!=" ",input!="  "||input!="   "||input!="    "||input!="     ")
+                // for(int i=0;i<input.length();i++)
+                // {
+                //     if(input[i]==32)
+                //     {
+                //         check=true;
+                //     }
+                //     else
+                //     {
+                //         check=false;
+                //     }
+                // }
+                if(check==false)
                 {
                     try
                     {                            
-                        if(input.length()==11)
+                        if(input.length()<12&&input.length()>7)
                         {
                             Phonenumber.insert(make_pair(Key,input));
                         }
                         else
                         {
                             throw invalid_argument("Smaller/larger than allowed");
+                            check=true;
                         }
                     }
                     catch(const std::exception& e)
@@ -60,7 +74,7 @@ class PhoneNumber
             }
             try
             {
-                if(type!=""||type!=" "||type!="  "||type!="   ")
+                if(type.length()!=0&&check==false)
                 {
                     TypeNumber.insert(make_pair(Key,type));
                     Key++;
@@ -86,10 +100,15 @@ class PhoneNumber
         cout<<"Enter number to delete : ";
         int input=0;
         cin>>input;
-        Phonenumber.erase(input);
-        TypeNumber.erase(input);
+        Phonenumber.erase(input-1);
+        TypeNumber.erase(input-1);
         Sleep(800);
         system("cls");
+    }
+    void EditPhoneNumber()
+    {
+        Display();
+        SetPhoneNumber();
     }
     virtual void Display() 
     {
@@ -112,7 +131,10 @@ class PhoneNumber
         }
         for(int i=0;i<index;i++)
         {
-            cout<<arr[i]<<" : "<<str[i]<<endl;
+            // if(stoi(str[i])>1)
+            // {
+                cout<<arr[i]+1<<" : "<<str[i]<<endl;
+            // }
         }
     }
 
@@ -122,10 +144,13 @@ class Person : public PhoneNumber
 {
     protected:
     string Name;
+    bool Delete;
     public:
     Person(){};
     void SetPerson()
     {
+        cin.get();
+        Delete=false;
         cout<<"Enter fullname : ";
         string input;
         getline(cin,input);
@@ -135,8 +160,31 @@ class Person : public PhoneNumber
     string Get(){return Name;}
     void Display()
     {
-        cout<<"Name = "<<Name<<endl;
-        PhoneNumber::Display();
+        if(!GetSoftDelete())
+        {
+            cout<<"Name = "<<Name<<endl;
+            PhoneNumber::Display();
+        }
+        // else
+        // {
+        //     cout<<"There is no such audience"<<endl;
+        // }
+    }
+    string GetName()
+    {
+        return Name;
+    }
+    void SoftDelete()
+    {
+        Delete=true;
+    }
+    bool GetSoftDelete()
+    {
+        return Delete;
+    }
+    ~Person()
+    {
+        // cout<<"default destructor "<<endl;
     }
 
 };
@@ -153,9 +201,68 @@ class Favorite
 /***********************************New Class*****************************/
 /***********************************New Class*****************************/
 /***********************************New Class*****************************/
+void Manu()
+{
+    vector<Person>persons;
+    while (true)
+    {
+        string input;
+        cout<<"1.Add contact "<<endl<<"2.Delete a number from the contact "<<endl<<"3.Add a number to a contact"<<endl;
+        cout<<"4.Delete contact "<<endl<<"";
+        cin>>input;
+        if(input=="1")
+        {
+            Person P;
+            P.SetPerson();
+            persons.push_back(P);
+        }
+        if(input=="3")
+        {
+            cout<<endl<<"Enter Name : ";
+            cin>>input;
+            cout<<endl;
+            for(auto& a:persons)
+            {
+                if(a.GetName()==input)
+                {
+                    a.EditPhoneNumber();
+                    break;
+                }
+            }
+        }
+        if(input=="4")
+        {
+            cout<<endl<<"Enter Name : ";
+            cin>>input;
+            cout<<endl;
+            for(auto& a:persons)
+            {
+                if(a.GetName()==input)
+                {
+                    a.SoftDelete();
+                    break;
+                }
+            }
+        }
+        if(input=="5")
+        {
+            for(auto& f:persons)
+            {
+                f.Display();
+            }
+        }
+        
+
+    }
+    
+
+
+}
+
 
 int main()
 {
+    Manu();
     map<string,int> info;
     info["Ali"]=1;
     info["Mohammadreza"]=2;
@@ -179,33 +286,27 @@ int main()
     {
         cout<<it->first<<","<<it->second<<endl;
     }
-    // map<int,Person> Persons;
-    // p.SetPerson();
-    // Persons.insert(make_pair(1,p));
-    // p.SetPerson();
-    // Persons.insert(make_pair(2,p));
-    // for(auto it=Persons.begin();it!=Persons.end();it++)
-    // {
-    //     cout<<"Key value = "<<it->first<<" , ";
-    //     it->second.Display();
-    // }
-    // cout<<endl<<"------------------------------"<<endl;
-    // Persons.erase(4);
-    // for(auto it=Persons.begin();it!=Persons.end();it++)
-    // {
-    //     cout<<"Key value = "<<it->first<<" , ";
-    //     it->second.Display();
-    // }
     cout<<endl<<"------------------------------"<<endl;
-    // PhoneNumber PH;
-    // PH.SetPhoneNumber();
-    // PH.Display();
-    Person PP;
-    PP.SetPerson();
-    PP.Display();
-    PP.DeletePhoneNumber();
-    PP.Display();
-
+    vector<Person>persons;
+    for(int i=0;i<2;i++)
+    {
+        Person PP;
+        PP.SetPerson();
+        persons.push_back(PP);
+    }
+    for(auto& a:persons)
+    {
+        
+        if(a.GetName()=="ali")
+        {
+            a.DeletePhoneNumber();
+            break;
+        }
+    }
+    for(auto& a:persons)
+    {
+        a.Display();
+    }
 
 
 
