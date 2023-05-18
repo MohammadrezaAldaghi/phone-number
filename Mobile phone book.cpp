@@ -106,12 +106,15 @@ public:
         Sleep(800);
         system("cls");
     }
-    void EditPhoneNumber()
+    void EditPhoneNumber_ADD()
     {
         Display();
         SetPhoneNumber();
     }
-
+    void DeletePhoneNumber_DELETE()
+    {
+        DeletePhoneNumber();
+    }
     virtual void Display()
     {
         int arr[15];
@@ -230,16 +233,15 @@ public:
 
 };
 /***********************************New Class*****************************/
-/***********************************New Class*****************************/
-/***********************************New Class*****************************/
+
 void SORT(string *str,vector<Person>& P)
 {
     int k = 0;
     int size = str->length();
+    k = str->length() - 1;
     sort(str,str+str->length()-1);
-  
     cout <<endl<< "------------------------------------------" << endl;
-    while (str[k]!="")
+    while (k>=0)
     {
         for (auto& a : P)
         {
@@ -250,8 +252,7 @@ void SORT(string *str,vector<Person>& P)
                 break;
             }
         }
-       /* P[k].Display();*/
-        k++;
+        k--;
     }
 
     cout << endl<<"------------------------------------------" << endl;
@@ -272,13 +273,29 @@ void Manu()
         string input;
         cout << "1.Add contact " << endl << "2.Delete a number from the contact " << endl << "3.Add a number to a contact" << endl;
         cout << "4.Delete contact " << endl << "5.Add Favorite" <<endl<<"6.Display all contact "<<endl<<"7.Display all favorites" <<endl<< "8.search contact " <<endl;
-        cout << "9.Delete favorite" <<endl<<"10.Dipslay (sort by name)"<< endl;
+        cout << "9.Delete favorite" << endl << "10.Dipslay (sort by name)" << endl << "11.Display a specific audience " << endl<<"12.Exit"<<endl<<"Enter Number >> ";
         cin >> input;
         if (input == "1")
         {
             Person P;
             P.SetPerson();
             persons.push_back(P);
+        }
+        if (input == "2")
+        {
+            cout << endl << "Enter Name : ";
+            cin >> input;
+            cout << endl;
+            for (auto& a : persons)
+            {
+                if (a.GetName() == input)
+                {
+                    a.DeletePhoneNumber_DELETE();
+                    break;
+                }
+            }
+            system("pause");
+            system("cls");
         }
         if (input == "3")
         {
@@ -289,7 +306,7 @@ void Manu()
             {
                 if (a.GetName() == input)
                 {
-                    a.EditPhoneNumber();
+                    a.EditPhoneNumber_ADD();
                     break;
                 }
             }
@@ -377,6 +394,25 @@ void Manu()
             }
             SORT(str,persons);
         }
+        if (input == "11")
+        {
+            cout << "Enter name : ";
+            cin >> input;
+            for (auto& a : persons)
+            {
+                if (a.GetName() == input)
+                {
+                    a.Display();
+                    break;
+                }
+            }
+        }
+        if (input == "11")
+        {
+            cout << endl << "See you latter" << endl;
+            exit(1);
+        }
+
 
 
     }
@@ -438,3 +474,6 @@ int main()
 
     return 0;
 }
+
+
+
