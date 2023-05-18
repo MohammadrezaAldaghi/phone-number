@@ -4,6 +4,7 @@
 #include<iterator>
 #include<windows.h>
 #include<cstdlib>
+#include<algorithm>
 #include<vector>
 using namespace std;
 
@@ -110,6 +111,7 @@ class PhoneNumber
         Display();
         SetPhoneNumber();
     }
+    
     virtual void Display() 
     {
         int arr[15];
@@ -186,16 +188,44 @@ class Person : public PhoneNumber
     {
         // cout<<"default destructor "<<endl;
     }
+    Person GetPErson()
+    {
+        return *this;
+    }
+    void GetSearch(string search)
+    {
+        bool t=true;
+        for(int i=0;i<Name.length();i++)
+        {
+            if(Name.find(search))
+            {
+                cout<<Name<<endl;
+            }
+        }
+    }
+
 
 };
 /***********************************New Class*****************************/
 
 /***********************************New Class*****************************/
-class Favorite
+class Favorite : public Person
 {
     protected:
-
+    map<string,Person> Favorites;
     public:
+    void SetFavorite(Person& p)
+    {
+        Favorites.insert(make_pair(p.GetName(),p));
+        cout<<"Added the object has type qualifiers that are not compatible with the member function"<<endl;
+    }
+    void Display()
+    {
+        for(auto& p:Favorites)
+        {
+            cout<<p.first<<" , "<<p.second.GetName()<<endl;
+        }
+    }
 
 };
 /***********************************New Class*****************************/
@@ -204,11 +234,12 @@ class Favorite
 void Manu()
 {
     vector<Person>persons;
+    vector<Person>favorites;
     while (true)
     {
         string input;
         cout<<"1.Add contact "<<endl<<"2.Delete a number from the contact "<<endl<<"3.Add a number to a contact"<<endl;
-        cout<<"4.Delete contact "<<endl<<"";
+        cout<<"4.Delete contact "<<endl<<"5.Add Favorite"<<endl;
         cin>>input;
         if(input=="1")
         {
@@ -246,12 +277,55 @@ void Manu()
         }
         if(input=="5")
         {
+            cout<<endl<<"Enter Name : ";
+            cin>>input;
+            cout<<endl;
+
+            for(auto& a:persons)
+            {
+                if(input==a.GetName())
+                {
+                 favorites.push_back(a.GetPErson());   
+                }
+            }
+        }
+        if(input=="6")
+        {
             for(auto& f:persons)
             {
                 f.Display();
             }
         }
-        
+        if(input=="7")
+        {
+            for(auto& a:favorites)
+            {
+                a.Display();
+            }
+        }
+        if(input=="8")
+        {
+            char k;
+            string res;
+            vector<Person>vec1=persons;
+            while (true)
+            {
+                cin>>k;
+                if(k=='0')
+                {
+                    return;
+                }
+                res+=k;
+                for(auto& l:vec1)
+                {
+                    (l.GetSearch(res));
+                }
+            }
+            
+        }
+
+
+
 
     }
     
