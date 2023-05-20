@@ -8,6 +8,41 @@
 #include<vector>
 using namespace std;
 
+
+template<typename T> 
+class Buffer
+{
+    protected:
+        int Size;
+        T* Array;
+        int Capacity;
+        int write_index;
+        int read_index;
+    public:
+    Buffer(int s):Capacity(s),write_index(0),read_index(0) ,Size(s)
+    {
+        Array = new T[s];
+    }
+    void SetBuffer(T value)
+    {
+        Array[write_index]=value;
+        write_index = (write_index+1)%Capacity;
+        if(write_index==read_index)
+        {
+            read_index=(read_index+1)%Size;
+        }
+    }
+    void DISPLAY()
+    {
+        for(int i=0;i<Capacity;i++)
+        {
+            cout<<Array[i]<<" ";
+        }
+        cout<<endl;
+    }
+        
+};
+/****************************new class***************/
 class PhoneNumber
 {
 protected:
@@ -34,28 +69,17 @@ public:
             cin >> type;
             try
             {
-                // for(int i=0;i<input.length();i++)
-                // {
-                //     if(input[i]==32)
-                //     {
-                //         check=true;
-                //     }
-                //     else
-                //     {
-                //         check=false;
-                //     }
-                // }
                 if (check == false)
                 {
                     try
                     {
-                        if (input.length() < 12 && input.length() > 7)
+                        if (input.length() < 13 && input.length() > 7)
                         {
                             Phonenumber.insert(make_pair(Key, input));
                         }
                         else
                         {
-                            throw invalid_argument("Smaller/larger than allowed");
+                            throw invalid_argument("Smaller/larger than allowed❌");
                             check = true;
                         }
                     }
@@ -66,7 +90,7 @@ public:
                 }
                 else
                 {
-                    throw invalid_argument("invalid argument");
+                    throw invalid_argument("invalid argument❌");
                 }
             }
             catch (const std::exception& e)
@@ -82,14 +106,14 @@ public:
                 }
                 else
                 {
-                    throw invalid_argument("invalid argument");
+                    throw invalid_argument("invalid argument❌");
                 }
             }
             catch (const std::exception& e)
             {
                 std::cerr << e.what() << '\n';
             }
-
+            cout<<endl<<"Add ✅ "<<endl;
             Sleep(700);
             system("cls");
         }
@@ -103,6 +127,7 @@ public:
         cin >> input;
         Phonenumber.erase(input - 1);
         TypeNumber.erase(input - 1);
+        cout<<endl<<"Delete ✅"<<endl;
         Sleep(800);
         system("cls");
     }
@@ -138,7 +163,7 @@ public:
         {
             // if(stoi(str[i])>1)
             // {
-            cout << arr[i] + 1 << " : " << str[i] << endl;
+            cout << arr[i] + 1 << " : " << str[i] << " 📱📱📱"<<endl;
             // }
         }
     }
@@ -167,7 +192,7 @@ public:
     {
         if (!GetSoftDelete())
         {
-            cout << "Name = " << Name << endl;
+            cout << "Name (📞)= " << Name << endl;
             PhoneNumber::Display();
         }
         // else
@@ -182,6 +207,7 @@ public:
     void SoftDelete()
     {
         Delete = true;
+        cout<<"Delete ✅"<<endl;
     }
     bool GetSoftDelete()
     {
@@ -283,8 +309,9 @@ void Manu()
         }
         if (input == "2")
         {
+            cin.ignore();
             cout << endl << "Enter Name : ";
-            cin >> input;
+            getline(cin,input);
             cout << endl;
             for (auto& a : persons)
             {
@@ -294,13 +321,16 @@ void Manu()
                     break;
                 }
             }
+            cin.clear();
             system("pause");
             system("cls");
         }
         if (input == "3")
         {
             cout << endl << "Enter Name : ";
-            cin >> input;
+            cin.ignore();
+
+            getline(cin,input);
             cout << endl;
             for (auto& a : persons)
             {
@@ -310,11 +340,13 @@ void Manu()
                     break;
                 }
             }
+            cin.clear();
         }
         if (input == "4")
         {
             cout << endl << "Enter Name : ";
-            cin >> input;
+            cin.ignore();
+            getline(cin,input);
             cout << endl;
             for (auto& a : persons)
             {
@@ -324,11 +356,14 @@ void Manu()
                     break;
                 }
             }
+            cin.clear();
         }
         if (input == "5")
         {
             cout << endl << "Enter Name : ";
-            cin >> input;
+            cin.ignore();
+
+            getline(cin,input);
             cout << endl;
 
             for (auto& a : persons)
@@ -338,6 +373,8 @@ void Manu()
                     favorites.push_back(a.GetPErson());
                 }
             }
+            cin.clear();
+
         }
         if (input == "6")
         {
@@ -358,19 +395,25 @@ void Manu()
             string res;
             vector<Person>vec1 = persons;
             cout << endl << "Enter Name : ";
-            cin >> res;
+            cin.ignore();
+
+            getline(cin,res);
             cout << endl;
             for (auto& l : vec1)
             {
                 l.GetSearch(res);
             }
             system("pause");
+            cin.clear();
             system("cls");
+
         }
         if (input == "9")
         {
             cout << endl << "Enter Name : ";
-            cin >> input;
+            cin.ignore();
+
+            getline(cin,input);
             cout << endl;
             Person k;
             for (auto& a : favorites)
@@ -381,6 +424,8 @@ void Manu()
                     break;
                 }
             }
+            cin.clear();
+
 
         }
         if (input == "10")
@@ -397,7 +442,9 @@ void Manu()
         if (input == "11")
         {
             cout << "Enter name : ";
-            cin >> input;
+            cin.ignore();
+
+            getline(cin,input);
             for (auto& a : persons)
             {
                 if (a.GetName() == input)
@@ -407,7 +454,7 @@ void Manu()
                 }
             }
         }
-        if (input == "11")
+        if (input == "12")
         {
             cout << endl << "See you latter" << endl;
             exit(1);
@@ -425,50 +472,58 @@ void Manu()
 int main()
 {
     Manu();
-    map<string, int> info;
-    info["Ali"] = 1;
-    info["Mohammadreza"] = 2;
-    info["Amir"] = 3;
-    if (info.count("Amir"))
-    {
-        cout << "Yes" << endl;
-    }
-    else
-    {
-        cout << "No" << endl;
-    }
-    Person p;
+    // Buffer<int> B(3);
+    // for(int i=0;i<15;i++)
+    // {
+    //     B.SetBuffer(i);
+    // }
+    // B.DISPLAY();
 
-    map<string, int> maps;
-    maps.insert(make_pair("ali", 1));
-    maps.insert(make_pair("amir", 2));
-    maps.insert(make_pair("sina", 3));
-    maps.insert(make_pair("ahmad", 4));
-    for (auto it = maps.begin(); it != maps.end(); it++)
-    {
-        cout << it->first << "," << it->second << endl;
-    }
-    cout << endl << "------------------------------" << endl;
-    vector<Person>persons;
-    for (int i = 0; i < 2; i++)
-    {
-        Person PP;
-        PP.SetPerson();
-        persons.push_back(PP);
-    }
-    for (auto& a : persons)
-    {
 
-        if (a.GetName() == "ali")
-        {
-            a.DeletePhoneNumber();
-            break;
-        }
-    }
-    for (auto& a : persons)
-    {
-        a.Display();
-    }
+    // map<string, int> info;
+    // info["Ali"] = 1;
+    // info["Mohammadreza"] = 2;
+    // info["Amir"] = 3;
+    // if (info.count("Amir"))
+    // {
+    //     cout << "Yes" << endl;
+    // }
+    // else
+    // {
+    //     cout << "No" << endl;
+    // }
+    // Person p;
+
+    // map<string, int> maps;
+    // maps.insert(make_pair("ali", 1));
+    // maps.insert(make_pair("amir", 2));
+    // maps.insert(make_pair("sina", 3));
+    // maps.insert(make_pair("ahmad", 4));
+    // for (auto it = maps.begin(); it != maps.end(); it++)
+    // {
+    //     cout << it->first << "," << it->second << endl;
+    // }
+    // cout << endl << "------------------------------" << endl;
+    // vector<Person>persons;
+    // for (int i = 0; i < 2; i++)
+    // {
+    //     Person PP;
+    //     PP.SetPerson();
+    //     persons.push_back(PP);
+    // }
+    // for (auto& a : persons)
+    // {
+
+    //     if (a.GetName() == "ali")
+    //     {
+    //         a.DeletePhoneNumber();
+    //         break;
+    //     }
+    // }
+    // for (auto& a : persons)
+    // {
+    //     a.Display();
+    // }
 
 
 
